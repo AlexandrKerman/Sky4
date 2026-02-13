@@ -25,3 +25,4 @@ def convert_dict_list(raw_data: list[dict]) -> list:
             for category in raw_data
         ]
     return []
+
