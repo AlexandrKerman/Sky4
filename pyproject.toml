@@ -23,22 +23,30 @@ lints = [
     "isort (>=7.0.0,<8.0.0)"
 ]
 tests = [
-    "pytest (>=9.0.2,<10.0.0)"
+    "pytest (>=9.0.2,<10.0.0)",
+    "pytest-cov (>=7.0.0,<8.0.0)"
 ]
 
 [tool.mypy]
 disallow_untyped_defs = true
 warn_return_any = true
-exclude = ['venv', '.venv', 'src/decorators', 'src/generators']
+exclude = ['venv', '.venv', 'main', 'tests/']
 
 [tool.black]
 line-length = 119
 exclude = '''
-(
-    /(
+/(
     \.git
-    )/
-)
+  | \.venv
+  | \.env
+  | venv
+  | env
+  | dist
+  | build
+  | migrations
+  | node_modules
+  | htmlcov
+)/
 '''
 
 [tool.isort]
