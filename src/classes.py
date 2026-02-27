@@ -88,11 +88,11 @@ class Category:
         Category.product_count += 1
 
     @property
-    def products(self) -> list:
+    def products(self) -> str:
         """
         Возвращает __products в виде списка строк
         """
-        return [f"{i.name}, {i.price} руб. Остаток: {i.quantity} шт." for i in self.__products]
+        return '\n'.join([f"{i.name}, {i.price} руб. Остаток: {i.quantity} шт." for i in self.__products])
 
     @property
     def product_objects(self) -> list:
