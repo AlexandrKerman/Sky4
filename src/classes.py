@@ -92,7 +92,7 @@ class Category:
         """
         Возвращает __products в виде списка строк
         """
-        return '\n'.join([f"{i.name}, {i.price} руб. Остаток: {i.quantity} шт." for i in self.__products])
+        return "\n".join([f"{i.name}, {i.price} руб. Остаток: {i.quantity} шт." for i in self.__products])
 
     @property
     def product_objects(self) -> list:

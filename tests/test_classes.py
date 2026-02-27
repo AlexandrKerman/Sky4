@@ -41,6 +41,5 @@ def test_price(product_obj):
 def test_add_product(category_obj, product_obj):
     category_obj.add_product(product_obj)
     assert category_obj.product_objects[0].name == "product_1"
-    print(category_obj.products, 'zalupa')
-    assert category_obj.products == ("product_1, 50.9 руб. Остаток: 4 шт.\n"
-                                     "product_1, 50.9 руб. Остаток: 4 шт.")
+    print(category_obj.products, "zalupa")
+    assert category_obj.products == ("product_1, 50.9 руб. Остаток: 4 шт.\n" "product_1, 50.9 руб. Остаток: 4 шт.")
