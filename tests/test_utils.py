@@ -24,8 +24,6 @@ def test_convert_dict_list():
                     "price": 180000.0,
                     "quantity": 5,
                 },
-                {"name": "Iphone 15", "description": "512GB, Gray space", "price": 210000.0, "quantity": 8},
-                {"name": "Xiaomi Redmi Note 11", "description": "1024GB, Синий", "price": 31000.0, "quantity": 14},
             ],
         }
     ]
@@ -34,7 +32,8 @@ def test_convert_dict_list():
 
     assert utils.convert_dict_list([]) == []
     assert result_data[0].name == "Смартфоны"
-    assert result_data[0].products[0].name == "Samsung Galaxy C23 Ultra"
+    assert result_data[0].product_objects[0].name == "Samsung Galaxy C23 Ultra"
+    assert result_data[0].products == "Samsung Galaxy C23 Ultra, 180000.0 руб. Остаток: 5 шт."
     assert isinstance(result_data[0], Category)
-    assert isinstance(result_data[0].products, list)
-    assert isinstance(result_data[0].products[0], Product)
+    assert isinstance(result_data[0].products, str)
+    assert isinstance(result_data[0].product_objects[0], Product)

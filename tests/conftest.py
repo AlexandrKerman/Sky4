@@ -10,6 +10,6 @@ def product_obj():
 
 
 @pytest.fixture()
-def category_obj():
-    category_1 = {"name": "category_1", "description": "Some category 1 description", "products": []}
+def category_obj(product_obj):
+    category_1 = {"name": "category_1", "description": "Some category 1 description", "products": [product_obj]}
     return classes.Category(**category_1)
