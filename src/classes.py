@@ -1,3 +1,6 @@
+from os import utime
+
+
 class Product:
     """
     Класс Продукты
@@ -106,7 +109,7 @@ class Category:
         """
         str of object
         """
-        return f"{self.name}, количество продуктов: {len(self.__products)} шт."
+        return f"{self.name}, количество продуктов: {sum(map(lambda x: x.quantity, self.__products))} шт." # Сумма по количеству в Product
 
     def add_product(self, product_obj: Product) -> None:
         """

@@ -64,4 +64,4 @@ def test_str_product(product_obj):
 
 
 def test_str_category(category_obj):
-    assert str(category_obj) == "category_1, количество продуктов: 1 шт."
+    assert str(category_obj) == "category_1, количество продуктов: 4 шт."
