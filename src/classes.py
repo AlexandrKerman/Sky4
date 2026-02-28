@@ -1,3 +1,6 @@
+from pickletools import uint1
+
+
 class Product:
     """
     Класс Продукты
@@ -19,6 +22,9 @@ class Product:
         self.description = description
         self.__price = price
         self.quantity = quantity
+
+    def __str__(self):
+        return f'{self.name}, {self.price} руб. Остаток: {self.quantity} шт.'
 
     @property
     def price(self) -> float:
@@ -78,7 +84,10 @@ class Category:
         self.description = description
         self.__products = products
         Category.category_count += 1
-        Category.product_count = len(self.__products)
+        Category.product_count += len(self.__products)
+
+    def __str__(self):
+        return f'{self.name}, количество продуктов: {len(self.__products)} шт.'
 
     def add_product(self, product_obj: Product) -> None:
         """
@@ -92,7 +101,7 @@ class Category:
         """
         Возвращает __products в виде списка строк
         """
-        return "\n".join([f"{i.name}, {i.price} руб. Остаток: {i.quantity} шт." for i in self.__products])
+        return "\n".join([str(i) for i in self.__products])
 
     @property
     def product_objects(self) -> list:
@@ -100,3 +109,7 @@ class Category:
         Возвращает __products в виде объектов
         """
         return self.__products
+
+
+
+
