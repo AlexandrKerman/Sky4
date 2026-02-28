@@ -60,9 +60,8 @@ def test_add(product_obj):
 
 
 def test_str_product(product_obj):
-    assert str(product_obj) == 'product_1, 50.9 руб. Остаток: 4 шт.'
+    assert str(product_obj) == "product_1, 50.9 руб. Остаток: 4 шт."
+
 
 def test_str_category(category_obj):
-    assert str(category_obj) == 'category_1, количество продуктов: 1 шт.'
-
-
+    assert str(category_obj) == "category_1, количество продуктов: 1 шт."

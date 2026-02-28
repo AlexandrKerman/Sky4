@@ -42,7 +42,6 @@ class Product:
             return self.__price * self.quantity + other.price * other.quantity
         return self.__price * self.quantity + other
 
-
     @property
     def price(self) -> float:
         return self.__price
@@ -109,7 +108,6 @@ class Category:
         """
         return f"{self.name}, количество продуктов: {len(self.__products)} шт."
 
-
     def add_product(self, product_obj: Product) -> None:
         """
         Создаёт новый объект класса
@@ -130,4 +128,3 @@ class Category:
         Возвращает __products в виде объектов
         """
         return self.__products
-
