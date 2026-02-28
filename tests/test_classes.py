@@ -43,3 +43,26 @@ def test_add_product(category_obj, product_obj):
     assert category_obj.product_objects[0].name == "product_1"
     print(category_obj.products, "zalupa")
     assert category_obj.products == ("product_1, 50.9 руб. Остаток: 4 шт.\n" "product_1, 50.9 руб. Остаток: 4 шт.")
+
+
+def test_add(product_obj):
+    res = product_obj + product_obj
+    assert res == product_obj.price * product_obj.quantity * 2
+
+    res = sum([product_obj])
+    assert res == product_obj.price * product_obj.quantity
+
+    res = product_obj + 200
+    assert res == product_obj.price * product_obj.quantity + 200
+
+    res = 200 + product_obj
+    assert res == product_obj.price * product_obj.quantity + 200
+
+
+def test_str_product(product_obj):
+    assert str(product_obj) == 'product_1, 50.9 руб. Остаток: 4 шт.'
+
+def test_str_category(category_obj):
+    assert str(category_obj) == 'category_1, количество продуктов: 1 шт.'
+
+
