@@ -1,6 +1,7 @@
 from unittest.mock import patch
 
 from src import classes
+from src.classes import Category, Product
 
 
 def test_product(product_obj):
@@ -65,3 +66,32 @@ def test_str_product(product_obj):
 
 def test_str_category(category_obj):
     assert str(category_obj) == "category_1, количество продуктов: 4 шт."
+
+
+def test_add_categories():
+    data = [
+        {
+            "name": "Смартфоны",
+            "description": "Смартфоны, как средство не только коммуникации, но и получение дополнительных функций для удобства жизни",
+            "products": [
+                {
+                    "name": "Samsung Galaxy C23 Ultra",
+                    "description": "256GB, Серый цвет, 200MP камера",
+                    "price": 180000.0,
+                    "quantity": 5,
+                },
+            ],
+        }
+    ]
+
+    result_data = Category.add_categories(data)
+
+    assert result_data[0].name == "Смартфоны"
+    assert result_data[0].product_objects[0].name == "Samsung Galaxy C23 Ultra"
+    assert result_data[0].products == "Samsung Galaxy C23 Ultra, 180000.0 руб. Остаток: 5 шт."
+    assert isinstance(result_data[0], Category)
+    assert isinstance(result_data[0].products, str)
+    assert isinstance(result_data[0].product_objects[0], Product)
+
+    assert Category.add_categories([]) == []
+
