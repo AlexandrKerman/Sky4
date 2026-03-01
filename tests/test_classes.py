@@ -1,7 +1,7 @@
 from unittest.mock import patch
 
 from src import classes
-from src.classes import Category, Product
+from src.classes import Category, CategoryIterator, Product
 
 
 def test_product(product_obj):
@@ -95,3 +95,20 @@ def test_add_categories():
 
     assert Category.add_categories([]) == []
 
+
+def test_iterator():
+    data = Category.add_categories(
+        [
+            {
+                "name": "test_category",
+                "description": "Cat_description",
+                "products": [
+                    {"name": "product_1", "description": "product_desc_1", "price": 1200, "quantity": 2},
+                    {"name": "product_2", "description": "product_desc_2", "price": 800, "quantity": 5},
+                ],
+            },
+        ]
+    )
+    expected = ["product_1, 1200 руб. Остаток: 2 шт.", "product_2, 800 руб. Остаток: 5 шт."]
+    for product, ex in zip(CategoryIterator(data[0]), expected):
+        assert str(product) == ex

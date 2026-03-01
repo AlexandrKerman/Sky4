@@ -9,6 +9,3 @@ def test_get_json():
     with patch("builtins.open", mock_open(read_data="[]")):
         assert utils.get_from_json("data/test.json") == []
     assert utils.get_from_json("data/test") == []
-
-
-
