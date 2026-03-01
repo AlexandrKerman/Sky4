@@ -1,3 +1,6 @@
+from os import utime
+
+
 class Product:
     """
     Класс Продукты
@@ -19,6 +22,28 @@ class Product:
         self.description = description
         self.__price = price
         self.quantity = quantity
+
+    def __str__(self) -> str:
+        """
+        str of object
+        """
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, other):
+        """
+        obj + obj, return sum of obj prices
+        """
+        if isinstance(other, Product):
+            return self.__price * self.quantity + other.price * other.quantity
+        return self.__price * self.quantity + other
+
+    def __radd__(self, other: float | int) -> float | int:
+        """
+        obj + any, return sum
+        """
+        if isinstance(other, Product):
+            return self.__price * self.quantity + other.price * other.quantity
+        return self.__price * self.quantity + other
 
     @property
     def price(self) -> float:
@@ -78,7 +103,13 @@ class Category:
         self.description = description
         self.__products = products
         Category.category_count += 1
-        Category.product_count = len(self.__products)
+        Category.product_count += len(self.__products)
+
+    def __str__(self) -> str:
+        """
+        str of object
+        """
+        return f"{self.name}, количество продуктов: {sum(map(lambda x: x.quantity, self.__products))} шт." # Сумма по количеству в Product
 
     def add_product(self, product_obj: Product) -> None:
         """
@@ -92,7 +123,7 @@ class Category:
         """
         Возвращает __products в виде списка строк
         """
-        return "\n".join([f"{i.name}, {i.price} руб. Остаток: {i.quantity} шт." for i in self.__products])
+        return "\n".join([str(i) for i in self.__products])
 
     @property
     def product_objects(self) -> list:
