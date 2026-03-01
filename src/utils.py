@@ -1,7 +1,5 @@
 import json
 
-from src.classes import Category, Product
-
 
 def get_from_json(path: str) -> list:
     if not path.endswith(".json"):
@@ -9,6 +7,7 @@ def get_from_json(path: str) -> list:
 
     with open(path, "r", encoding="utf-8") as json_file:
         return list(json.load(json_file))
+
 
 # moved in classes.py, now is Category class method
 #

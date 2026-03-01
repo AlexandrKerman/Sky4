@@ -1,6 +1,3 @@
-from itertools import product
-
-
 class Product:
     """
     Класс Продукты
@@ -109,7 +106,7 @@ class Category:
         """
         str of object
         """
-        return f"{self.name}, количество продуктов: {sum(map(lambda x: x.quantity, self.__products))} шт." # Сумма по количеству в Product
+        return f"{self.name}, количество продуктов: {sum(map(lambda x: x.quantity, self.__products))} шт."  # Сумма по количеству в Product
 
     def add_product(self, product_obj: Product) -> None:
         """
@@ -155,11 +152,12 @@ class CategoryIterator:
     :raises:
         TypeError: если не является объектом Category
     """
-    def __init__(self, category):
+
+    def __init__(self, category: Category):
         if isinstance(category, Category):
-          self.category = category
+            self.category = category
         else:
-            raise TypeError(f'Expected Category instance. Got {type(category)}')
+            raise TypeError(f"Expected Category instance. Got {type(category)}")
 
     def __iter__(self):
         """
@@ -181,4 +179,3 @@ class CategoryIterator:
             return self.category.product_objects[self.current]
         else:
             raise StopIteration
-
