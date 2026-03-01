@@ -1,6 +1,7 @@
 from unittest.mock import patch
 
-from src import classes
+import pytest
+
 from src.classes import Category, CategoryIterator, Product
 
 
@@ -25,7 +26,7 @@ def test_new_product(category_obj):
         "description": "256GB, Серый цвет, 200MP камера",
         "quantity": 2,
     }
-    first_test_product = classes.Product.new_product(pr_data, [category_obj])
+    first_test_product = Product.new_product(pr_data, [category_obj])
     assert first_test_product.price == 1200
 
 
@@ -42,22 +43,29 @@ def test_price(product_obj):
 def test_add_product(category_obj, product_obj):
     category_obj.add_product(product_obj)
     assert category_obj.product_objects[0].name == "product_1"
-    print(category_obj.products, "zalupa")
     assert category_obj.products == ("product_1, 50.9 руб. Остаток: 4 шт.\n" "product_1, 50.9 руб. Остаток: 4 шт.")
+
+    with pytest.raises(TypeError):
+        category_obj.add_product(0)
 
 
 def test_add(product_obj):
+    from src.classes import Smartphone, LawnGrass
+
     res = product_obj + product_obj
     assert res == product_obj.price * product_obj.quantity * 2
 
     res = sum([product_obj])
     assert res == product_obj.price * product_obj.quantity
 
-    res = product_obj + 200
-    assert res == product_obj.price * product_obj.quantity + 200
+    smartpone1 = Smartphone("smart_1", "smart_desc", 50000, 1, 100, "S1", 512, "blue")
+    smartpone2 = Smartphone("smart_2", "smart_desc", 40000, 2, 100, "S2", 1024, "black")
+    res = smartpone1 + smartpone2
+    assert res == 130000
 
-    res = 200 + product_obj
-    assert res == product_obj.price * product_obj.quantity + 200
+    grass = LawnGrass("grass_1", "grass_desc", 1000, 2, "Russia", 5, "green")
+    with pytest.raises(TypeError):
+        res = grass + smartpone2
 
 
 def test_str_product(product_obj):
@@ -112,3 +120,11 @@ def test_iterator():
     expected = ["product_1, 1200 руб. Остаток: 2 шт.", "product_2, 800 руб. Остаток: 5 шт."]
     for product, ex in zip(CategoryIterator(data[0]), expected):
         assert str(product) == ex
+
+
+def test_smartphone():
+    from src.classes import Smartphone
+
+    smartpone = Smartphone("smart_1", "smart_desc", 50000, 4, 100, "S1", 512, "blue")
+
+    assert str(smartpone) == "smart_1, 50000 руб. Остаток: 4 шт."
