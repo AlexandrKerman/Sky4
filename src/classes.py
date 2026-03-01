@@ -110,10 +110,15 @@ class Category:
 
     def add_product(self, product_obj: Product) -> None:
         """
-        Создаёт новый объект класса
+        Создаёт новый объект класса,
+        :raises
+            TypeError : if got not Product instance
         """
-        self.__products.append(product_obj)
-        Category.product_count += 1
+        if isinstance(product_obj, Product):
+            self.__products.append(product_obj)
+            Category.product_count += 1
+        else:
+            raise TypeError(f"Expected Product instance. Got {type(product_obj)}")
 
     @property
     def products(self) -> str:
@@ -182,6 +187,9 @@ class CategoryIterator:
 
 
 class Smartphone(Product):
+    """
+    Подкласс Product - Смартфоны
+    """
     def __init__(self, name: str, description: str, price: float, quantity: int, efficiency, model, memory, color):
         super().__init__(name, description, price, quantity)
         self.efficiency = efficiency
@@ -191,6 +199,9 @@ class Smartphone(Product):
 
 
 class LawnGrass(Product):
+    """
+    Подкласс Product - Газонная трава
+    """
     def __init__(self, name: str, description: str, price: float, quantity: int, country, germination_period, color):
         super().__init__(name, description, price, quantity)
         self.country = country
