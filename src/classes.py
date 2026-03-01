@@ -30,17 +30,21 @@ class Product:
         """
         obj + obj, return sum of obj prices
         """
-        if isinstance(other, Product):
+        if isinstance(other, self.__class__):
             return self.__price * self.quantity + other.price * other.quantity
-        return self.__price * self.quantity + other
+        if other == 0:  # for sum() and other
+            return self.__price * self.quantity + other
+        raise TypeError(f"Expected {type(self)}. Got {type(other)}")
 
     def __radd__(self, other: float | int) -> float | int:
         """
         obj + any, return sum
         """
-        if isinstance(other, Product):
+        if isinstance(other, self.__class__):
             return self.__price * self.quantity + other.price * other.quantity
-        return self.__price * self.quantity + other
+        if other == 0:  # for sum() and other
+            return self.__price * self.quantity + other
+        raise TypeError(f"Expected {type(self)}. Got {type(other)}")
 
     @property
     def price(self) -> float:
@@ -190,6 +194,7 @@ class Smartphone(Product):
     """
     Подкласс Product - Смартфоны
     """
+
     def __init__(self, name: str, description: str, price: float, quantity: int, efficiency, model, memory, color):
         super().__init__(name, description, price, quantity)
         self.efficiency = efficiency
@@ -202,6 +207,7 @@ class LawnGrass(Product):
     """
     Подкласс Product - Газонная трава
     """
+
     def __init__(self, name: str, description: str, price: float, quantity: int, country, germination_period, color):
         super().__init__(name, description, price, quantity)
         self.country = country
