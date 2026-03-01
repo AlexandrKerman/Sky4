@@ -1,4 +1,4 @@
-from os import utime
+from itertools import product
 
 
 class Product:
@@ -131,3 +131,54 @@ class Category:
         Возвращает __products в виде объектов
         """
         return self.__products
+
+    @classmethod
+    def add_categories(cls, raw_data: list[dict]) -> list:
+        """
+        Преобразует список словарей raw_data в список объектов Category.
+        """
+        if raw_data:
+            return [
+                cls(
+                    name=category["name"],
+                    description=category["description"],
+                    products=[Product(**category_product) for category_product in category["products"]],
+                )
+                for category in raw_data
+            ]
+        return []
+
+
+class CategoryIterator:
+    """
+    Итератор, возвращающий продукты в категории
+    :raises:
+        TypeError: если не является объектом Category
+    """
+    def __init__(self, category):
+        if isinstance(category, Category):
+          self.category = category
+        else:
+            raise TypeError(f'Expected Category instance. Got {type(category)}')
+
+    def __iter__(self):
+        """
+        Инициализация итератора
+        """
+        self.current = -1
+        self.product_len = len(self.category.product_objects)
+        return self
+
+    def __next__(self):
+        """
+        Возвращает следующий продукт категории
+
+        :raises:
+            StopIteration: Если список продуктов кончился
+        """
+        self.current += 1
+        if self.current < self.product_len:
+            return self.category.product_objects[self.current]
+        else:
+            raise StopIteration
+
