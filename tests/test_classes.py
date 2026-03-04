@@ -128,3 +128,23 @@ def test_smartphone():
     smartpone = Smartphone("smart_1", "smart_desc", 50000, 4, 100, "S1", 512, "blue")
 
     assert str(smartpone) == "smart_1, 50000 руб. Остаток: 4 шт."
+
+
+def test_printmixin(capsys):
+    from src.classes import PrintMixin
+
+    data = Category.add_categories(
+        [
+            {
+                "name": "test_category",
+                "description": "Cat_description",
+                "products": [
+                    {"name": "product_1", "description": "product_desc_1", "price": 1200, "quantity": 2},
+                    {"name": "product_2", "description": "product_desc_2", "price": 800, "quantity": 5},
+                ],
+            },
+        ]
+    )
+
+    captured = capsys.readouterr()
+    assert captured.out == (f"{repr(data[0].product_objects[0])}\n" f"{repr(data[0].product_objects[1])}\n")
