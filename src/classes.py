@@ -1,6 +1,3 @@
-from os import utime
-
-
 class Product:
     """
     Класс Продукты
@@ -33,17 +30,21 @@ class Product:
         """
         obj + obj, return sum of obj prices
         """
-        if isinstance(other, Product):
+        if isinstance(other, self.__class__):
             return self.__price * self.quantity + other.price * other.quantity
-        return self.__price * self.quantity + other
+        if other == 0:  # for sum() and other
+            return self.__price * self.quantity + other
+        raise TypeError(f"Expected {type(self)}. Got {type(other)}")
 
     def __radd__(self, other: float | int) -> float | int:
         """
         obj + any, return sum
         """
-        if isinstance(other, Product):
+        if isinstance(other, self.__class__):
             return self.__price * self.quantity + other.price * other.quantity
-        return self.__price * self.quantity + other
+        if other == 0:  # for sum() and other
+            return self.__price * self.quantity + other
+        raise TypeError(f"Expected {type(self)}. Got {type(other)}")
 
     @property
     def price(self) -> float:
@@ -109,14 +110,19 @@ class Category:
         """
         str of object
         """
-        return f"{self.name}, количество продуктов: {sum(map(lambda x: x.quantity, self.__products))} шт." # Сумма по количеству в Product
+        return f"{self.name}, количество продуктов: {sum(map(lambda x: x.quantity, self.__products))} шт."  # Сумма по количеству в Product
 
     def add_product(self, product_obj: Product) -> None:
         """
-        Создаёт новый объект класса
+        Создаёт новый объект класса,
+        :raises
+            TypeError : if got not Product instance
         """
-        self.__products.append(product_obj)
-        Category.product_count += 1
+        if isinstance(product_obj, Product):
+            self.__products.append(product_obj)
+            Category.product_count += 1
+        else:
+            raise TypeError(f"Expected Product instance. Got {type(product_obj)}")
 
     @property
     def products(self) -> str:
@@ -131,3 +137,79 @@ class Category:
         Возвращает __products в виде объектов
         """
         return self.__products
+
+    @classmethod
+    def add_categories(cls, raw_data: list[dict]) -> list:
+        """
+        Преобразует список словарей raw_data в список объектов Category.
+        """
+        if raw_data:
+            return [
+                cls(
+                    name=category["name"],
+                    description=category["description"],
+                    products=[Product(**category_product) for category_product in category["products"]],
+                )
+                for category in raw_data
+            ]
+        return []
+
+
+class CategoryIterator:
+    """
+    Итератор, возвращающий продукты в категории
+    :raises:
+        TypeError: если не является объектом Category
+    """
+
+    def __init__(self, category: Category):
+        if isinstance(category, Category):
+            self.category = category
+        else:
+            raise TypeError(f"Expected Category instance. Got {type(category)}")
+
+    def __iter__(self):
+        """
+        Инициализация итератора
+        """
+        self.current = -1
+        self.product_len = len(self.category.product_objects)
+        return self
+
+    def __next__(self):
+        """
+        Возвращает следующий продукт категории
+
+        :raises:
+            StopIteration: Если список продуктов кончился
+        """
+        self.current += 1
+        if self.current < self.product_len:
+            return self.category.product_objects[self.current]
+        else:
+            raise StopIteration
+
+
+class Smartphone(Product):
+    """
+    Подкласс Product - Смартфоны
+    """
+
+    def __init__(self, name: str, description: str, price: float, quantity: int, efficiency, model, memory, color):
+        super().__init__(name, description, price, quantity)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+
+class LawnGrass(Product):
+    """
+    Подкласс Product - Газонная трава
+    """
+
+    def __init__(self, name: str, description: str, price: float, quantity: int, country, germination_period, color):
+        super().__init__(name, description, price, quantity)
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color
