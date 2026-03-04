@@ -50,7 +50,7 @@ def test_add_product(category_obj, product_obj):
 
 
 def test_add(product_obj):
-    from src.classes import Smartphone, LawnGrass
+    from src.classes import LawnGrass, Smartphone
 
     res = product_obj + product_obj
     assert res == product_obj.price * product_obj.quantity * 2

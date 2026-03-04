@@ -8,11 +8,16 @@ class BaseProduct(ABC):
         pass
 
     @abstractmethod
-    def price(self):
+    def price(self) -> float:
         pass
 
 
-class Product(BaseProduct):
+class PrintMixin:
+    def __init__(self, obj):
+        print(repr(obj))
+
+
+class Product(BaseProduct, PrintMixin):
     """
     Класс Продукты
     """
@@ -33,6 +38,10 @@ class Product(BaseProduct):
         self.description = description
         self.__price = price
         self.quantity = quantity
+        super().__init__(self)
+
+    def __repr__(self):
+        return f'Product("{self.name}", "{self.description}", {self.price}, {self.quantity})'
 
     def __str__(self) -> str:
         """
