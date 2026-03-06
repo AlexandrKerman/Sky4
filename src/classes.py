@@ -192,7 +192,10 @@ class Category:
         return []
 
     def get_average(self):
-        return round(sum([product.price for product in self.__products]) / len(self.__products), 2)
+        if self.__products:
+            return round(sum([product.price for product in self.__products]) / len(self.__products), 2)
+        else:
+            return 0
 
 
 class CategoryIterator:
