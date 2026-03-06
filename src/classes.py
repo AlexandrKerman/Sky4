@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 
+from src import exceptions
+
 
 class BaseProduct(ABC):
     @classmethod
@@ -34,6 +36,9 @@ class Product(BaseProduct, PrintMixin):
         :param price: int - price
         :param quantity: int - quantity
         """
+        if not quantity:
+            raise exceptions.ZeroQuantityError
+
         self.name = name
         self.description = description
         self.__price = price
@@ -135,17 +140,26 @@ class Category:
         """
         return f"{self.name}, количество продуктов: {sum(map(lambda x: x.quantity, self.__products))} шт."  # Сумма по количеству в Product
 
-    def add_product(self, product_obj: Product) -> None:
+    def add_product(self, product_obj: Product = None, is_object: bool = True, **kwargs) -> None:
         """
         Создаёт новый объект класса,
         :raises
             TypeError : if got not Product instance
         """
-        if isinstance(product_obj, Product):
-            self.__products.append(product_obj)
-            Category.product_count += 1
-        else:
-            raise TypeError(f"Expected Product instance. Got {type(product_obj)}")
+        if is_object:
+            if isinstance(product_obj, Product):
+                self.__products.append(product_obj)
+                Category.product_count += 1
+            else:
+                raise TypeError(f"Expected Product instance. Got {type(product_obj)}")
+        elif kwargs:
+            try:
+                product_obj = Product(**kwargs)
+                self.__products.append(product_obj)
+            except exceptions.ZeroQuantityError as e:
+                print(e)
+            finally:
+                print("Обработка добавления товара завершена")
 
     @property
     def products(self) -> str:
@@ -176,6 +190,9 @@ class Category:
                 for category in raw_data
             ]
         return []
+
+    def get_average(self):
+        return round(sum([product.price for product in self.__products]) / len(self.__products), 2)
 
 
 class CategoryIterator:
