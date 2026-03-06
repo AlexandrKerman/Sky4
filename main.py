@@ -1,4 +1,4 @@
-from src.classes import Category, LawnGrass, Smartphone, Product
+from src.classes import Category, LawnGrass, Product, Smartphone
 
 
 def main():
@@ -6,7 +6,8 @@ def main():
         product_invalid = Product("Бракованный товар", "Неверное количество", 1000.0, 0)
     except ValueError as e:
         print(
-            "Возникла ошибка ValueError прерывающая работу программы при попытке добавить продукт с нулевым количеством")
+            "Возникла ошибка ValueError прерывающая работу программы при попытке добавить продукт с нулевым количеством"
+        )
     else:
         print("Не возникла ошибка ValueError при попытке добавить продукт с нулевым количеством")
 
@@ -20,6 +21,7 @@ def main():
 
     category_empty = Category("Пустая категория", "Категория без продуктов", [])
     print(category_empty.middle_price())
+
 
 if __name__ == "__main__":
     main()
