@@ -3,7 +3,7 @@ from unittest.mock import patch
 import pytest
 
 from src.classes import Category, CategoryIterator, Product
-
+from src import exceptions
 
 def test_product(product_obj):
     assert product_obj.name == "product_1"
@@ -40,13 +40,18 @@ def test_price(product_obj):
         assert product_obj.price == 10
 
 
-def test_add_product(category_obj, product_obj):
+def test_add_product(category_obj, product_obj, capsys):
     category_obj.add_product(product_obj)
     assert category_obj.product_objects[0].name == "product_1"
     assert category_obj.products == ("product_1, 50.9 руб. Остаток: 4 шт.\n" "product_1, 50.9 руб. Остаток: 4 шт.")
 
     with pytest.raises(TypeError):
         category_obj.add_product(0)
+
+    category_obj.add_product(is_object=False, name='product_1', description='d', price=50, quantity=0)
+    cmd_out = capsys.readouterr()
+    assert cmd_out.out == ('Количество не может быть нулевым\n'
+                           'Обработка добавления товара завершена\n')
 
 
 def test_add(product_obj):
